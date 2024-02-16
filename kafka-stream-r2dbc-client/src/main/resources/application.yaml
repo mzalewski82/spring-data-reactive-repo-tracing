@@ -1,0 +1,44 @@
+spring:
+#  reactor:
+#    context-propagation: auto
+  cloud:
+    function:
+      definition: helloReactive
+    stream:
+      bindings:
+        helloReactive-in-0:
+          group: kafka-stream-r2dbc-client
+          destination: hello.out
+          binder: kafka
+      kafka:
+        binder:
+          brokers: localhost
+          defaultBrokerPort: 29092
+          enable-observation: true
+  application:
+    name: kafka-stream-r2dbc-client
+  r2dbc:
+    url: "r2dbc:mariadb://localhost:3306/hello"
+    username: root
+    password: password
+
+management:
+  metrics:
+    mongo:
+      command:
+        enabled: false
+  tracing:
+    sampling:
+      probability: 1.0
+    enabled: true
+    propagation:
+      type: w3c
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
+server:
+  port: 8084
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
