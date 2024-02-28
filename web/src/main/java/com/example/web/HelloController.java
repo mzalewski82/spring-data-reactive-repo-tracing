@@ -19,17 +19,19 @@ public class HelloController {
 
   @GetMapping("hello")
   public Mono<Hello> hello(@RequestParam String name) {
-    log.info("Saying hello to: {}", name);
+    return Mono.just(name)
+        .doOnNext(it -> log.info("Saying hello to: {}", it))
+        .map(it -> {
+          String helloString = String.format("Hello %s !!!", it);
 
-    String helloString = String.format("Hello %s !!!", name);
-    streamBridge.send("hello-out-0", helloString);
+          streamBridge.send("hello-out-0", helloString);
 
-    Hello hello = new Hello();
-    hello.setText(helloString);
-
-    helloSpan.logHello(hello);
-
-    return helloReactiveRepo.save(hello)
+          Hello hello = new Hello();
+          hello.setText(helloString);
+          return hello;
+        })
+        .doOnNext(helloSpan::logHello)
+        .flatMap(helloReactiveRepo::save)
         .flatMap(helloSpan::logHelloReactive);
   }
 }

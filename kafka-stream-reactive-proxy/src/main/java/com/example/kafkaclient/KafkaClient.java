@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,9 +18,8 @@ public class KafkaClient {
 
   @Bean
   public Function<Flux<Message<String>>, Flux<Message<String>>> helloReactive() {
-    return flux -> flux.flatMap(message -> {
-      log.info("Received message {}", message);
-      return helloSpan.logHello(message);
-    });
+    return flux -> flux.flatMap(message -> Mono.just(message)
+        .doOnNext(it -> log.info("Received message {}", it))
+        .flatMap(helloSpan::logHello));
   }
 }
