@@ -8,7 +8,6 @@ import reactor.core.publisher.Hooks;
 public class KafkaStreamReactiveClientApplication {
 
   public static void main(String[] args) {
-    Hooks.enableAutomaticContextPropagation();
     SpringApplication.run(KafkaStreamReactiveClientApplication.class, args);
   }
 

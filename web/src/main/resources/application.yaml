@@ -1,6 +1,6 @@
 spring:
-#  reactor:
-#    context-propagation: auto
+  reactor:
+    context-propagation: auto
   cloud:
     stream:
       kafka:
@@ -11,6 +11,7 @@ spring:
       bindings:
         hello-out-0:
           destination: hello.in
+      default-binder: kafka
   application:
     name: web
   data:

@@ -8,7 +8,6 @@ import reactor.core.publisher.Hooks;
 public class WebApplication {
 
   public static void main(String[] args) {
-    Hooks.enableAutomaticContextPropagation();
     SpringApplication.run(WebApplication.class, args);
   }
 }

@@ -1,6 +1,6 @@
 spring:
-#  reactor:
-#    context-propagation: auto
+  reactor:
+    context-propagation: auto
   cloud:
     function:
       definition: helloReactive
@@ -15,6 +15,7 @@ spring:
           brokers: localhost
           defaultBrokerPort: 29092
           enable-observation: true
+      default-binder: kafka
   application:
     name: kafka-stream-reactive-client
   data:

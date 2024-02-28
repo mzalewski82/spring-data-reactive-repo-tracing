@@ -19,6 +19,7 @@ spring:
           brokers: localhost
           defaultBrokerPort: 29092
           enable-observation: true
+      default-binder: kafka
   application:
     name: kafka-stream-reactive-proxy
 
